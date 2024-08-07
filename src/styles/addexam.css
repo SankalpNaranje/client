@@ -1,0 +1,13 @@
+.progressbar {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 55px; 
+    z-index: 1000; 
+    padding: 10px; 
+    
+  }
+  
+  .content {
+    padding-top: 20px; 
+  }
+  
