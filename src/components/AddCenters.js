@@ -11,4 +11,4 @@ const { examId } = useParams();
   )
 }
 
-export default AddCenters
+export default AddCenters 
