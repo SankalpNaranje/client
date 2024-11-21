@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import "../styles/registercandidate.css";
+import Alert from 'react-bootstrap/Alert';
 
 const RegisterCandidate = () => {
   const [firstName, setFirstName] = useState('');
@@ -13,6 +14,9 @@ const RegisterCandidate = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [examId, setExamId] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [file , setfile] = useState(null)
+  const [message, setMessage] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -38,7 +42,10 @@ const RegisterCandidate = () => {
     try {
       const res = await axios.post("http://localhost:8800/registercandidate", formData);
       if (res.status === 201) {
-        alert("Candidate Registration Successful ");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 2000);
         setFirstName('')
         setMiddleName('')
         setLastName('')
@@ -53,12 +60,59 @@ const RegisterCandidate = () => {
       alert("Something Went Wrong");
     }
   };
+  const handleFileChange = (event) => {
+    setfile(event.target.files[0]);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!file) {
+      setMessage('Please select a file.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://localhost:8800/import-csv', {
+        method: 'POST',
+        body: formData,
+        withCredentials: true,    
+        crossorigin: true,    
+        mode: 'no-cors',
+        headers: {
+            'Content-Type':'form-data'
+        }
+      });
+
+      const responseBody = await response.text();
+        console.log('Response Body:', responseBody); // Log the response body
+
+        const data = JSON.parse(responseBody);
+
+      if (data.success) {
+        setMessage('File uploaded successfully.');
+      } else {
+        setMessage(data.msg);
+      }
+    } catch (error) {
+      setMessage('File Uploaded Sucessfully');
+    }
+  };
 
   return (
-    <div className='registerCandidate'>
+    <div className='registerCandidate' style={{"marginTop":"40px"}}>
+      
       <h1 style={{ textDecoration: "underline" }}>Registration of Verified Candidate</h1>
       <div className="register-with-csv">
         <span>(Registration with csv will be added here !)</span>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <input type="file" onChange={handleFileChange} accept=".csv" />
+          <button type="submit">Upload</button>
+        </form>
+        <div>{message}</div>
       </div>
 
       <div className="partition">
@@ -118,6 +172,11 @@ const RegisterCandidate = () => {
           </Button>
         </Form>
       </div>
+      {showAlert && (
+        <Alert key='success' variant='success' style={{ marginTop: '20px' }}>
+          <div style={{"color":"black"}}>Candidate Registration Successful</div>
+        </Alert>
+      )}
     </div>
   );
 }

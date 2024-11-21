@@ -1,7 +1,7 @@
 .progressbar {
     position: -webkit-sticky; /* For Safari */
     position: sticky;
-    top: 55px; 
+    top: 25px; 
     z-index: 1000; 
     padding: 10px; 
     

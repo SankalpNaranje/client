@@ -67,7 +67,7 @@ const Addexam = () => {
       <div className="progressbar">
         <ProgressBar now={now} label={`${now}%`} />
       </div>
-      <div className="content">
+      <div className="content" style={{"marginTop":"40px"}}>
         <h1>Create Examination</h1>
         
         <div className="register-without-csv">

@@ -1,0 +1,12 @@
+.infocolumn1{
+    display: flex;
+    justify-content: left;
+}
+.centers{
+    display: flex;
+    margin:  10px;
+}
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}

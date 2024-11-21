@@ -12,6 +12,7 @@
 }
 .app-right{
   width: 80vw;
-  height: 100vh;
-  padding: 50px;
+  /* height: 100vh; */
+  padding: 0px 50px;
+  /* background-color: #111526; */
 }

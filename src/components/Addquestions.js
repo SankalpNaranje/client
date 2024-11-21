@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
 const AddQuestions = () => {
-const now = 50
-const history = useNavigate()
+  const now = 50;
+  const history = useNavigate();
   const { examId, questions } = useParams();
   const numQuestions = parseInt(questions, 10);
+
   const [formData, setFormData] = useState({
     examId,
     questions: Array(numQuestions).fill(''),
     timeToComplete: Array(numQuestions).fill(''),
-    answers: Array(numQuestions).fill('')
+    answers: Array(numQuestions).fill(''),
   });
+
+  // State to check if form is submitted
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = (index, field, value) => {
     const newFormData = { ...formData };
@@ -31,10 +34,8 @@ const history = useNavigate()
       if (res.status === 201) {
         console.log('Questions Added Successfully');
         alert('Questions added successfully');
-        const eid = examId;
-        setFormData('');
-        history(`/addexam/create-questions/${eid}/exam-centers`);
-
+        setIsSubmitted(true); // Update state after submission
+        history(`/addexam/create-centers/${examId}/exam-centers`);
       } else {
         console.log('Failed to add questions');
       }
@@ -60,12 +61,17 @@ const history = useNavigate()
     createTable();
   }, [examId]);
 
+  // Don't render the form after successful submission
+  if (isSubmitted) {
+    return null;
+  }
+
   return (
     <div>
-        <div className="progressbar">
+      <div className="progressbar">
         <ProgressBar now={now} label={`${now}%`} />
       </div>
-      <h2>Creating Questions for Exam ID : {examId}</h2>
+      <h2>Creating Questions for Exam ID: {examId}</h2>
       <h4>Total Number of Questions: {questions}</h4>
       <Form onSubmit={handleSubmit}>
         {Array.from({ length: numQuestions }, (_, index) => (

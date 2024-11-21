@@ -14,12 +14,16 @@ import RegisterCandidate from './components/RegisterCandidate';
 import Addexam from './components/Addexam';
 import Addquestions from './components/Addquestions';
 import AddCenters from './components/AddCenters';
+import Conformation from './components/Conformation';
+import GenerateExam from './components/GenerateExam';
+import ManageExam from './components/ManageExam';
 
 function App() {
   return (
+    <>
     <Router>
-      <Navbars/>
-      <div className="App" style={{ paddingTop: '60px' }}>
+      {/* <Navbars/> */}
+      <div className="App">
         <div className="app-left">
         <Dashboard/>
         </div>
@@ -29,9 +33,12 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/register" element={<Register/>} />
           <Route exact path="/addcandidate" element={<RegisterCandidate/>} />
+          <Route exact path="/generate-exam" element={<GenerateExam/>} />
+          <Route exact path="/manage-exam" element={<ManageExam/>} />
           <Route exact path="/addexam/create-exam" element={<Addexam/>} />
           <Route exact path="/addexam/create-questions/:examId/:questions" element={<Addquestions/>} />
-          <Route exact path="/addexam/create-questions/:examId/exam-centers" element={<AddCenters/>} />
+          <Route exact path="/addexam/create-centers/:examId/exam-centers" element={<AddCenters/>} />
+          <Route exact path="/addexam/conformation/:examId" element={<Conformation/>} />
 
         </Routes>
         </div>
@@ -39,6 +46,7 @@ function App() {
       </div>
 
     </Router>
+    </>
   );
 }
 
